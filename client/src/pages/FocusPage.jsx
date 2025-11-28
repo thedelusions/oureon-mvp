@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import {
   Card,
@@ -12,6 +13,7 @@ import {
 } from '../components/ui';
 
 const FocusPage = () => {
+  const { user } = useAuth();
   const [activeSession, setActiveSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -22,9 +24,9 @@ const FocusPage = () => {
     notes: '',
   });
   const [formData, setFormData] = useState({
-    mode: 'Deep Work',
-    project: 'Personal',
-    plannedMinutes: 25,
+    mode: user?.preferences?.defaultFocusMode || 'Deep Work',
+    project: user?.preferences?.defaultProject || 'Personal',
+    plannedMinutes: user?.preferences?.defaultFocusMinutes || 25,
   });
 
   const modes = ['Deep Work', 'Study', 'Meeting', 'Break', 'Other'];
@@ -33,6 +35,17 @@ const FocusPage = () => {
   useEffect(() => {
     checkActiveSession();
   }, []);
+
+  // Update form defaults when user preferences change
+  useEffect(() => {
+    if (user?.preferences && !activeSession) {
+      setFormData({
+        mode: user.preferences.defaultFocusMode || 'Deep Work',
+        project: user.preferences.defaultProject || 'Personal',
+        plannedMinutes: user.preferences.defaultFocusMinutes || 25,
+      });
+    }
+  }, [user, activeSession]);
 
   useEffect(() => {
     let interval;

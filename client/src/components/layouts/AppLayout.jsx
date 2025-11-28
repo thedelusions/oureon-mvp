@@ -10,7 +10,10 @@ const Sidebar = () => {
     { path: '/app/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/app/tasks', label: 'Tasks', icon: '✓' },
     { path: '/app/focus', label: 'Focus', icon: '🎯' },
+    { path: '/app/timeline', label: 'Timeline', icon: '📅' },
+    { path: '/app/insights', label: 'Insights', icon: '💡' },
     { path: '/app/summary', label: 'Summary', icon: '📈' },
+    { path: '/app/settings', label: 'Settings', icon: '⚙️' },
   ];
 
   const handleLogout = () => {

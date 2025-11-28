@@ -7,6 +7,9 @@ import DashboardPage from './pages/DashboardPage';
 import TasksPage from './pages/TasksPage';
 import FocusPage from './pages/FocusPage';
 import SummaryPage from './pages/SummaryPage';
+import TimelinePage from './pages/TimelinePage';
+import InsightsPage from './pages/InsightsPage';
+import SettingsPage from './pages/SettingsPage';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -79,6 +82,30 @@ function App() {
             element={
               <ProtectedRoute>
                 <SummaryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/app/timeline"
+            element={
+              <ProtectedRoute>
+                <TimelinePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/app/insights"
+            element={
+              <ProtectedRoute>
+                <InsightsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/app/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
               </ProtectedRoute>
             }
           />

@@ -11,6 +11,7 @@ const DashboardPage = () => {
   const [tasks, setTasks] = useState([]);
   const [dailySummary, setDailySummary] = useState(null);
   const [activeSession, setActiveSession] = useState(null);
+  const [weeklyInsights, setWeeklyInsights] = useState(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -19,15 +20,17 @@ const DashboardPage = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [tasksRes, summaryRes, sessionRes] = await Promise.all([
+      const [tasksRes, summaryRes, sessionRes, insightsRes] = await Promise.all([
         api.get('/tasks?scope=today'),
         api.get('/summary/daily'),
         api.get('/focus/active'),
+        api.get('/insights/weekly'),
       ]);
 
       setTasks(tasksRes.data.data.tasks);
       setDailySummary(summaryRes.data.data);
       setActiveSession(sessionRes.data.data.session);
+      setWeeklyInsights(insightsRes.data.data);
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
     } finally {
@@ -71,10 +74,61 @@ const DashboardPage = () => {
         <h1 className="heading-1 mb-2">Welcome back, {firstName} 👋</h1>
         <p className="text-textMuted">
           {dailySummary?.totalMinutesToday > 0
-            ? `You've focused for ${dailySummary.totalMinutesToday} minutes this week. Keep it up!`
+            ? `You've focused for ${dailySummary.totalMinutesToday} minutes today. Keep it up!`
             : "Let's make today productive!"}
         </p>
       </div>
+
+      {/* Weekly Highlights */}
+      {weeklyInsights && (
+        <Card className="bg-gradient-to-r from-accent/10 to-accent/5 border-accent/20">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-6">
+              <div>
+                <p className="text-xs text-textMuted mb-1">This Week</p>
+                <p className="text-2xl font-bold text-textPrimary">
+                  {weeklyInsights.totalFocusHours}h focus time
+                </p>
+              </div>
+              <div className="h-8 w-px bg-white/10" />
+              <div>
+                <p className="text-xs text-textMuted mb-1">Tasks</p>
+                <p className="text-2xl font-bold text-textPrimary">
+                  {weeklyInsights.tasksCompleted} completed
+                </p>
+              </div>
+              <div className="h-8 w-px bg-white/10" />
+              <div>
+                <p className="text-xs text-textMuted mb-1">Active Days</p>
+                <p className="text-2xl font-bold text-textPrimary">
+                  {weeklyInsights.daysWithFocus} / 7 days
+                  {weeklyInsights.streak >= 3 && ' 🔥'}
+                </p>
+              </div>
+            </div>
+            <Button variant="secondary" onClick={() => navigate('/app/insights')}>
+              View Insights
+            </Button>
+          </div>
+        </Card>
+      )}
+
+      {/* Suggestion Card */}
+      {weeklyInsights?.suggestions?.[0] && (
+        <Card className="bg-accent/5 border-accent/20">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">💡</span>
+            <div>
+              <p className="text-sm font-medium text-textPrimary mb-1">
+                Suggestion for you
+              </p>
+              <p className="text-sm text-textMuted">
+                {weeklyInsights.suggestions[0]}
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
