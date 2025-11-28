@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-textPrimary font-sans antialiased;
+  }
+  
+  * {
+    @apply border-white/10;
+  }
+}
+
+@layer components {
+  /* Button Components */
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center gap-2;
+  }
+  
+  .btn-primary {
+    @apply bg-accent text-white hover:bg-accent/90 active:scale-95 shadow-lg shadow-accent/20;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent border border-white/10 text-textPrimary hover:bg-white/5 active:scale-95;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent text-textMuted hover:text-textPrimary hover:bg-white/5;
+  }
+  
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700 active:scale-95;
+  }
+  
+  /* Input Components */
+  .input {
+    @apply w-full px-4 py-2.5 bg-surface border border-white/10 rounded-lg text-textPrimary placeholder:text-textMuted focus:ring-2 focus:ring-accent/50 focus:border-accent outline-none transition-all;
+  }
+  
+  .textarea {
+    @apply input resize-none;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-textPrimary mb-2;
+  }
+  
+  /* Card Components */
+  .card {
+    @apply bg-surface rounded-xl border border-white/5 p-6 hover:border-accent/40 transition-colors;
+  }
+  
+  .card-interactive {
+    @apply card hover:bg-white/5 cursor-pointer;
+  }
+  
+  /* Layout */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+  }
+  
+  /* Typography */
+  .heading-1 {
+    @apply text-3xl font-bold text-textPrimary;
+  }
+  
+  .heading-2 {
+    @apply text-2xl font-semibold text-textPrimary;
+  }
+  
+  .heading-3 {
+    @apply text-xl font-semibold text-textPrimary;
+  }
+  
+  .text-body {
+    @apply text-sm text-textMuted;
+  }
+}
